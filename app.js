@@ -295,15 +295,40 @@
   }
 
   // ---------- Calendar export ----------
+  var openMenu = null;
+  function closeCalendarMenu() {
+    if (openMenu) { openMenu.remove(); openMenu = null; }
+    document.removeEventListener('click', onDocClick, true);
+  }
+  function onDocClick(e) {
+    if (openMenu && !openMenu.contains(e.target)) closeCalendarMenu();
+  }
   function openCalendarMenu(anchorEl, p) {
-    var choice = window.prompt('選擇加入行事曆的方式：輸入 1 = Google 日曆（開新分頁），輸入 2 = 下載 .ics 檔（Apple/Outlook 日曆）', '1');
-    if (choice === null) return;
-    if (choice.trim() === '2') {
-      downloadICS(p);
-    } else {
+    closeCalendarMenu();
+    var menu = document.createElement('div');
+    menu.className = 'cal-menu';
+    var googleOpt = document.createElement('button');
+    googleOpt.className = 'cal-menu-item';
+    googleOpt.textContent = '新增到 Google 日曆';
+    googleOpt.addEventListener('click', function () {
       window.open(googleCalendarUrl(p), '_blank', 'noopener');
-    }
-    showToast('已為「' + truncate(p.title, 16) + '」開啟行事曆選項');
+      showToast('已開啟 Google 日曆');
+      closeCalendarMenu();
+    });
+    var icsOpt = document.createElement('button');
+    icsOpt.className = 'cal-menu-item';
+    icsOpt.textContent = '下載 .ics（Apple / Outlook 日曆）';
+    icsOpt.addEventListener('click', function () {
+      downloadICS(p);
+      showToast('已下載行事曆檔案');
+      closeCalendarMenu();
+    });
+    menu.appendChild(googleOpt);
+    menu.appendChild(icsOpt);
+    anchorEl.parentElement.style.position = 'relative';
+    anchorEl.parentElement.appendChild(menu);
+    openMenu = menu;
+    setTimeout(function () { document.addEventListener('click', onDocClick, true); }, 0);
   }
 
   function truncate(s, n) { return s.length > n ? s.slice(0, n) + '…' : s; }
