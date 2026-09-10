@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>賽事雷達 · Hami Video 運動節目表</title>
+<meta name="description" content="自動收集 Hami Video 運動頻道節目表，依棒球、F1、桌球、排球、名古屋亞運分類，方便尋找賽事回放並加入行事曆。" />
+
+<!-- Fonts: Cabinet Grotesk (display) + Satoshi (body) via Fontshare -->
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,500,400&f[]=satoshi@700,500,400,300&display=swap" rel="stylesheet" />
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#top" aria-label="賽事雷達 首頁">
+      <svg class="brand-logo" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="21" stroke="currentColor" stroke-width="2.5" opacity="0.35"/>
+        <circle cx="24" cy="24" r="14" stroke="currentColor" stroke-width="2.5" opacity="0.6"/>
+        <path d="M24 24 L24 5 A19 19 0 0 1 41 15 Z" fill="currentColor" opacity="0.9"/>
+        <circle cx="24" cy="24" r="4" fill="currentColor"/>
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">賽事雷達</span>
+        <span class="brand-sub">Hami Video 運動節目表</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <span class="updated-badge" id="updatedBadge">資料載入中…</span>
+      <button class="icon-btn" id="themeToggle" aria-label="切換深色/淺色模式" data-theme-toggle></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="intro">
+    <h1 class="page-title">找到你的賽事，安排回放與行事曆</h1>
+    <p class="page-desc">
+      自動整理 <strong>Hami Video 運動頻道</strong> 的完整節目表，標記
+      <span class="tag-inline tag-baseball">棒球</span>
+      <span class="tag-inline tag-f1">F1</span>
+      <span class="tag-inline tag-table_tennis">桌球</span>
+      <span class="tag-inline tag-volleyball">排球</span>
+      <span class="tag-inline tag-asiangames">名古屋亞運</span>
+      等你關注的類別，一鍵加入行事曆或前往回看。
+    </p>
+    <p class="coverage-note" id="coverageNote"></p>
+  </section>
+
+  <section class="controls" aria-label="篩選條件">
+    <div class="control-row">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" id="searchInput" placeholder="搜尋隊伍、賽事、頻道…" aria-label="搜尋節目" />
+      </div>
+      <div class="segmented" id="scopeSegmented" role="tablist" aria-label="時間範圍">
+        <button class="seg-btn is-active" data-scope="all" role="tab" aria-selected="true">全部時段</button>
+        <button class="seg-btn" data-scope="upcoming" role="tab" aria-selected="false">即將登場</button>
+        <button class="seg-btn" data-scope="replay" role="tab" aria-selected="false">可回看</button>
+      </div>
+    </div>
+    <div class="chip-row" id="categoryChips" aria-label="分類篩選"></div>
+  </section>
+
+  <section class="schedule" aria-label="節目時間表">
+    <div id="scheduleList" class="schedule-list"></div>
+    <p id="emptyState" class="empty-state" hidden>找不到符合條件的節目，試試調整篩選條件。</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>
+    資料每日自動從 <a href="https://hamivideo.hinet.net/" target="_blank" rel="noopener">Hami Video</a> 運動頻道節目表收集並累積存檔，
+    僅整理節目時刻與分類資訊，實際觀看/回看請於 Hami Video 官方平台（需訂閱）進行。
+  </p>
+  <p id="statsFooter"></p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
